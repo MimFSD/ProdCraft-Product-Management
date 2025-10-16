@@ -7,6 +7,7 @@ export const metadata = {
   description: 'Manage products with ease',
 };
 
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
