@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Goal
+Build a Next.js (App Router) application that allows a user to browse, create, edit, view details, and delete products. Focus on polished UI/UX, solid validation, and clean code. Please use this color palette for your design.
 
-## Getting Started
+Quick API notes
+Authentication: send POST /auth with the same email you used on your job application, e.g., { "email": "you@example.com" } to get a JWT. Include the token as Authorization: Bearer on every request.
 
-First, run the development server:
+Required tech stack
+Framework: Next.js (App Router)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Library: React
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+State management: Redux Toolkit
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Styling: Tailwind CSS 
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Functional requirements
+Auth & session
+Simple login screen that accepts an email, calls POST /auth, store the JWT in the redux store, and send it with product requests.
 
-## Learn More
+Provide logout functionality.
 
-To learn more about Next.js, take a look at the following resources:
+Products page
+Display all products with pagination.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Real-time search by product name.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Delete product with a confirmation pop-up.
 
-## Deploy on Vercel
+Cache data where necessary; ensure cache invalidation or updates after create/edit/delete.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Create & Edit pages
+Single form for create and edit flows.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Create product with category and update product category.
+
+Client-side validations on all fields: required fields, correct types (number/string), and custom validations (e.g., price > 0).
+
+Show inline validation messages and error handling.
+
+Details page
+Full product information with actions: Edit, Delete (confirmation).
+
+UX / UI expectations (very important)
+Modern, visually consistent design with attention to spacing, typography.
+
+Responsive layout (mobile, desktop).
+
+Clear loading and error states for network operations.
+
+Smooth user flows for primary actions (create, edit, delete).
+
+Deployment (Mandatory)
+You must deploy the project to Vercel, Netlify, or a similar hosting platform and provide the following:
+
+Public GitHub repository URL
+
+Live deployed link
+
+What we will evaluate
+Feature completeness — All core CRUD flows (products, search, pagination, create, edit, details, delete)
+
+UX / UI design — Visual polish, layout consistency, and responsive behavior. (This is important)
+
+Code quality & best practices — Component structure, modularity, readability, and use of Redux Toolkit.
+
+Validation & error handling — Proper client-side validations and handling of server errors.
+
+Extras/innovations — Thoughtful bonus features (e.g., filter products by category), micro-interactions, improvements, or thoughtful trade-offs.
