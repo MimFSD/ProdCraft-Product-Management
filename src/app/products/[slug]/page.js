@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 
+
 export default function ProductDetails() {
   const router = useRouter();
   const params = useParams(); // <-- use this hook

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import { fetchProducts } from '../../redux/slices/productSlice';
 
+
 export default function ProductsPage() {
   const dispatch = useDispatch();
   const router = useRouter();
