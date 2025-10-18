@@ -1,6 +1,6 @@
 ## BiteX Products
 
-A modern Next.js application for browsing, creating, editing, and deleting products with a clean, responsive UI. Authentication is email-based and the app persists your session locally. Product data and categories are fetched from a provided REST API.
+BiteX is a modern Next.js app for managing products—browse, create, edit, and delete—with a clean, responsive interface. Authentication is email-based, and your session is saved locally. Product data and categories are fetched from a REST API.
 
 ### Tech stack
 
@@ -157,6 +157,4 @@ public/                 # Static assets
 - **Unauthorized (401)**: Your token may be invalid or expired. Log out and sign in again.
 - **Stale data after mutations**: The app uses tag invalidation; if you changed the API behavior, ensure endpoints still return ids used by tags.
 
-## License
 
-This repository is for assessment/demo purposes.
