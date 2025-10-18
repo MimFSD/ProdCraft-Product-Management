@@ -1,123 +1,162 @@
-# 🛍️ ProdCraft Product Management 
+## BiteX Products
 
-## 🎯 Goal
-Build a **Next.js (App Router)** application that allows users to **browse, create, edit, view, and delete products**.  
-Focus on:
-- Polished **UI/UX**
-- Strong **validation**
-- Clean, maintainable **code**
+A modern Next.js application for browsing, creating, editing, and deleting products with a clean, responsive UI. Authentication is email-based and the app persists your session locally. Product data and categories are fetched from a provided REST API.
 
-> 💡 Use the given color palette for your design to maintain visual consistency.
+### Tech stack
 
----
+- **Next.js 15** (App Router, React 19)
+- **TypeScript**
+- **Redux Toolkit + RTK Query** (state management, data fetching, cache invalidation)
+- **Redux Persist** (auth/session persistence)
+- **React Hook Form + Zod** (forms and validation)
+- **Tailwind CSS v4** (utility-first styling) with custom component classes
+- **Lucide Icons**
 
-## ⚙️ Quick API Notes
-- **Authentication**  
-  Send a POST request to `/auth` with your registered email:
-  ```json
-  { "email": "you@example.com" }
-You’ll receive a JWT token — include it in every request header:
+### Features
 
-makefile
-Copy code
-Authorization: Bearer <your_jwt_token>
-🧰 Required Tech Stack
-Framework: Next.js (App Router)
+- **Auth**: simple email login, token persisted in `localStorage`
+- **Products**:
+  - List with search, category filter, price range filter, sorting, and pagination
+  - Create new product with validation and image previews
+  - View product detail with image gallery and price formatting
+  - Edit product
+  - Delete product (with confirmation), with optimistic UI for lists
+- **Categories**: loaded for filtering and selection in forms
+- **Responsive UI**: desktop and mobile navigation (with a mobile drawer)
+- **Accessibility niceties**: keyboard shortcut `/` to focus search
 
-Library: React
+## Data fetching and caching
 
-State Management: Redux Toolkit
+- RTK Query handles requests, caching, and cache invalidation via tags:
+  - `Products` (LIST, SEARCH) and `Product` (by id)
+  - `Categories` (LIST, SEARCH)
+- Mutations invalidate relevant tags to keep UI in sync without manual refetching.
 
-Styling: Tailwind CSS
+## Styling
 
-🧑‍💻 Functional Requirements
-🔐 Auth & Session
-Simple login screen (email only)
+- Tailwind CSS v4 utilities power layout and typography.
+- Custom component classes (e.g., `btn`, `card`, `input`, `label`, etc.) are defined in `app/globals.css`.
 
-Call POST /auth, store JWT in Redux store
+## Environment & persistence
 
-Include token with all product-related requests
+- Redux Persist stores auth state under `persist:root` in `localStorage`.
+- If you ever get into a bad state, logging out clears persisted data. You can also manually remove `persist:root` from the browser's storage.
 
-Provide Logout functionality
+## Getting started
 
-🗂️ Products Page
-Display all products with pagination
+### Prerequisites
 
-Real-time search by product name
+- Node.js 18+ (LTS recommended)
+- npm 9+
 
-Delete product with confirmation pop-up
+### Install
 
-Implement data caching and proper cache invalidation after create/edit/delete
+```bash
+npm install
+```
 
-✏️ Create & Edit Pages
-Single form used for both Create and Edit flows
+### Development
 
-Add or update products with category selection
+```bash
+npm run dev
+```
 
-Client-side validation for:
+Starts Next.js with Turbopack on `http://localhost:3000`.
 
-Required fields
+### Build
 
-Data types (string/number)
+```bash
+npm run build
+```
 
-Custom rules (e.g., price > 0)
+### Start (production)
 
-Show inline error messages and handle server errors gracefully
+```bash
+npm run start
+```
 
-📄 Product Details Page
-Display full product information
+### Lint
 
-Include Edit and Delete actions (with confirmation)
+```bash
+npm run lint
+```
 
-💎 UX / UI Expectations
-Modern and visually consistent design
+## API configuration
 
-Proper spacing, typography, and alignment
+The API base URL is currently hardcoded in `services/api.ts`:
 
-Fully responsive layout (mobile & desktop)
+```ts
+const BASE_URL = "https://api.bitechx.com";
+```
 
-Clear loading and error states
+To point the app to a different backend, change `BASE_URL` and restart the dev server. If you prefer environment variables, you can refactor to read from `process.env.NEXT_PUBLIC_API_URL` and add it to an `.env.local` file.
 
-Smooth and intuitive user flows for Create/Edit/Delete
+## Authentication flow
 
-🚀 Deployment (Mandatory)
-Deploy the project using Vercel, Netlify, or a similar platform.
-Provide:
+- Go to `/login` and submit a valid email.
+- On success, the backend returns `{ token }` which is stored in Redux state and persisted to `localStorage` via Redux Persist.
+- Authenticated product/category requests include `Authorization: Bearer <token>`.
+- Logout via the header menu clears Redux state, RTK Query cache, and removes persisted data.
 
-🌐 Live deployed link
+## Product flows
 
-📦 Public GitHub repository URL
+- **Browse**: `/products` shows a grid with search, filters, sorting, and pagination.
+- **Create**: `/products/new` uses `ProductForm` with Zod validation, then navigates to the created product page.
+- **Detail**: `/products/[slug]` shows images, category, price and actions (Edit/Delete).
+- **Edit**: `/products/[slug]/edit` loads the existing data into `ProductForm`.
+- **Delete**: from detail page or list modal; cache is invalidated to refresh lists.
 
-🧾 Evaluation Criteria
-Category	Description
-Feature completeness	All core CRUD operations, search, pagination, and product details
-UX / UI design	Visual polish, layout consistency, and responsiveness
-Code quality	Clean architecture, modular components, Redux best practices
-Validation & error handling	Proper client-side and server-side validation
-Extras / Innovations	Bonus features (filters, animations, micro-interactions, performance optimizations)
+## Keyboard shortcuts
 
-💡 Optional Enhancements
-Filter products by category
+- `/` focuses the search input on the products page.
 
-Add product sorting (price, date, etc.)
+## Scripts reference
 
-Integrate optimistic UI updates
+Defined in `package.json`:
 
-Add dark/light theme toggle
+- `dev`: `next dev --turbopack`
+- `build`: `next build --turbopack`
+- `start`: `next start`
+- `lint`: `eslint`
 
-✅ Deliverables:
+## Project structure
 
-Public GitHub repository
+```
+app/
+  layout.tsx            # Root layout, providers wrapper
+  page.tsx              # Homepage (marketing + entry to products)
+  login/page.tsx        # Email login
+  products/
+    page.tsx            # Products list
+    new/page.tsx        # Create product
+    [slug]/page.tsx     # Product detail
+    [slug]/edit/page.tsx# Edit product
+components/
+  Header.tsx            # Top nav (desktop + mobile)
+  Products.tsx          # Products list with filters, search, pagination
+  ProductCard.tsx       # Product card for grid display
+  ProductForm.tsx       # Create/Edit form with validation and previews
+  Providers.tsx         # Redux, PersistGate, QueryClient providers
+features/
+  auth/authSlice.ts     # Auth state, actions, logout thunk
+lib/
+  store.ts              # Store setup, types, hooks
+services/
+  api.ts                # RTK Query API slice and endpoints
+public/                 # Static assets
+```
 
-Live deployed demo link
+## Notes
 
-Proper documentation (README, comments, etc.)
+- The app includes `@tanstack/react-query` provider for future use, but current data fetching is via RTK Query.
+- Image elements intentionally use standard `img` tags to keep the UX simple.
 
-“Clean UI, clear logic, and smooth user experience — that’s the goal.”
+## Troubleshooting
 
-yaml
-Copy code
+- **Cannot see products after login**: Ensure the backend at the configured `BASE_URL` is reachable and returns data for your token.
+- **Unauthorized (401)**: Your token may be invalid or expired. Log out and sign in again.
+- **Stale data after mutations**: The app uses tag invalidation; if you changed the API behavior, ensure endpoints still return ids used by tags.
 
----
+## License
 
-Would you like me to also add a **preview section** (like screenshots, tech badges, or deployment ins
+This repository is for assessment/demo purposes.
